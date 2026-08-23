@@ -1,0 +1,44 @@
+# nuxt-deploy-github-cn.yml
+# github.com/shenjuexiao
+# 20260823
+
+# chat.deepseek.com/a/chat/s/e3d45c84-591a-43ad-9fcc-b0b6811ad8eb
+# Nuxt 部署 GitHub Pages
+
+# .github/workflows/nuxt-deploy-github-cn.yml
+name: nuxt-deploy-github-cn
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install
+      # 重点：使用 github_pages 预设进行构建
+      - run: npx nuxt build --preset github_pages
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./.output/public
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
