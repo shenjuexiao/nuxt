@@ -26,7 +26,8 @@ jobs:
       - run: npm install
       # 重点：使用 github_pages 预设进行构建
       # - run: npx nuxt build --preset github_pages
-      - run: npm run build --yes
+      - run: npm install better-sqlite3
+      - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .output/public
