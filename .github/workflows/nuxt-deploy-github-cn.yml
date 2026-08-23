@@ -28,8 +28,19 @@ jobs:
       - run: npx nuxt build --preset github_pages
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .output/public
-
+          path: ./.output/public
+      - name: Verify build output
+        run: |
+          if [ -d ".output/public" ]; then
+            echo "✅ .output/public exists"
+            ls -la .output/public/
+          else
+            echo "❌ .output/public not found!"
+            echo "Available directories:"
+            ls -la
+            exit 1
+          fi
+          
   deploy:
     needs: build
     permissions:
@@ -42,3 +53,4 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        
