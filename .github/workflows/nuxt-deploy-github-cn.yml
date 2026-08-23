@@ -25,10 +25,11 @@ jobs:
           node-version: "20"
       - run: npm install
       # 重点：使用 github_pages 预设进行构建
-      - run: npx nuxt build --preset github_pages
+      # - run: npx nuxt build --preset github_pages
+      - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./.output/public
+          path: .output/public
       - name: Verify build output
         run: |
           if [ -d ".output/public" ]; then
@@ -53,4 +54,3 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
-        
