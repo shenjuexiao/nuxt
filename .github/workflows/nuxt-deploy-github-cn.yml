@@ -32,7 +32,6 @@ jobs:
       - name: Install dependencies
         run: npm install
         
-    
       - name: Install better-sqlite3
         run: npm install better-sqlite3
         
